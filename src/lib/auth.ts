@@ -24,9 +24,18 @@ async function loadViewer(): Promise<Viewer> {
   }
 
   const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+
+  // getClaims() memverifikasi tanda tangan JWT secara lokal terhadap JWKS yang
+  // di-cache (10 menit), sehingga TIDAK ada panggilan jaringan ke server auth
+  // Supabase di setiap navigasi — getUser() selalu mengirim 1 request penuh.
+  // Kalau proyek memakai kunci simetris atau JWKS tidak bisa diambil,
+  // getClaims() sendiri otomatis jatuh ke getUser(), jadi biayanya tidak pernah
+  // lebih mahal dari sebelumnya.
+  const { data: claimData } = await supabase.auth.getClaims();
+  const claims = claimData?.claims;
+  const user: { id: string; email?: string | null } | null = claims?.sub
+    ? { id: claims.sub, email: claims.email ?? null }
+    : null;
 
   if (!user) {
     return { supabase, user: null, profile: null, tenant: null, isOwner: false };
