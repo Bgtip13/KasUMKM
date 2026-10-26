@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient, supabaseConfigured } from "@/lib/supabase/server";
 import type { Profile, Tenant } from "@/lib/types";
@@ -17,7 +18,7 @@ export type Viewer = {
   isOwner: boolean;
 };
 
-export async function getViewer(): Promise<Viewer> {
+async function loadViewer(): Promise<Viewer> {
   if (!supabaseConfigured()) {
     redirect("/?setup=1");
   }
@@ -31,21 +32,18 @@ export async function getViewer(): Promise<Viewer> {
     return { supabase, user: null, profile: null, tenant: null, isOwner: false };
   }
 
-  const { data: profile } = await supabase
+  // Satu request saja: profil + tenant usahanya di-join lewat foreign key.
+  // Sebelumnya ini dua query berurutan (profil, lalu tenant).
+  const { data: profileRow } = await supabase
     .from("profiles")
-    .select("*")
+    .select("*, tenant:tenants(*)")
     .eq("id", user.id)
-    .maybeSingle<Profile>();
+    .maybeSingle<Profile & { tenant: Tenant | null }>();
 
-  let tenant: Tenant | null = null;
-  if (profile?.tenant_id) {
-    const { data } = await supabase
-      .from("tenants")
-      .select("*")
-      .eq("id", profile.tenant_id)
-      .maybeSingle<Tenant>();
-    tenant = data ?? null;
-  }
+  const profile: Profile | null = profileRow
+    ? (({ tenant: _ignored, ...fields }) => fields)(profileRow)
+    : null;
+  const tenant: Tenant | null = profileRow?.tenant ?? null;
 
   const isOwner =
     profile?.role === "owner" ||
@@ -53,6 +51,16 @@ export async function getViewer(): Promise<Viewer> {
 
   return { supabase, user, profile, tenant, isOwner };
 }
+
+/**
+ * Satu request = satu kali ambil sesi, profil, dan tenant.
+ *
+ * Layout dan halaman di bawahnya sama-sama memanggil getViewer() (melalui
+ * requireTenant/requireTenantAdmin), sehingga tanpa cache() setiap halaman akan
+ * menjalankan waterfall autentikasi yang sama dua kali. React `cache` mengingat
+ * hasilnya untuk seluruh render satu request.
+ */
+export const getViewer = cache(loadViewer);
 
 /** Admin usaha (pemilik data tenant). Akun kasir tidak termasuk. */
 export function isTenantAdmin(profile: Profile | null) {
