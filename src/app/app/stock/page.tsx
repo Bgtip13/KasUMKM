@@ -29,17 +29,6 @@ export default async function StockPage({
   const { supabase, tenant } = await requireTenantAdmin();
   const sp = await searchParams;
 
-  const { data: productData } = await supabase
-    .from("products")
-    .select("id, name, unit, stock, min_stock, cost_price, track_stock")
-    .eq("is_active", true)
-    .order("name");
-
-  const products = (productData ?? []) as Pick<
-    Product,
-    "id" | "name" | "unit" | "stock" | "min_stock" | "cost_price" | "track_stock"
-  >[];
-
   let movementQuery = supabase
     .from("stock_movements")
     .select("*, products(name, unit)")
@@ -50,7 +39,20 @@ export default async function StockPage({
     movementQuery = movementQuery.eq("product_id", sp.product);
   }
 
-  const { data: movementData } = await movementQuery;
+  // Keduanya tidak saling bergantung → dijalankan berbarengan, bukan berurutan.
+  const [{ data: productData }, { data: movementData }] = await Promise.all([
+    supabase
+      .from("products")
+      .select("id, name, unit, stock, min_stock, cost_price, track_stock")
+      .eq("is_active", true)
+      .order("name"),
+    movementQuery,
+  ]);
+
+  const products = (productData ?? []) as Pick<
+    Product,
+    "id" | "name" | "unit" | "stock" | "min_stock" | "cost_price" | "track_stock"
+  >[];
   const movements = (movementData ?? []) as StockMovement[];
 
   return (
