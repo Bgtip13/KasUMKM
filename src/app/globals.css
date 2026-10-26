@@ -1,0 +1,227 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+html,
+body {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .card {
+    border-radius: 0.75rem;
+    border: 1px solid #e2e8f0;
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+  }
+
+  .card-pad {
+    padding: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .card-pad {
+      padding: 1.25rem;
+    }
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: #059669;
+    color: #fff;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: #047857;
+  }
+
+  .btn-secondary {
+    background-color: #0f172a;
+    color: #fff;
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background-color: #1e293b;
+  }
+
+  .btn-outline {
+    background-color: #fff;
+    border-color: #cbd5e1;
+    color: #334155;
+  }
+  .btn-outline:hover:not(:disabled) {
+    background-color: #f8fafc;
+  }
+
+  .btn-danger {
+    background-color: #fff;
+    border-color: #fecaca;
+    color: #b91c1c;
+  }
+  .btn-danger:hover:not(:disabled) {
+    background-color: #fef2f2;
+  }
+
+  .btn-sm {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8125rem;
+  }
+
+  .label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #334155;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid #cbd5e1;
+    background-color: #fff;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    color: #0f172a;
+    outline: none;
+  }
+
+  .input:focus,
+  .select:focus,
+  .textarea:focus {
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgb(16 185 129 / 0.15);
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  .table th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #64748b;
+    padding: 0.625rem 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+  }
+
+  .table td {
+    padding: 0.625rem 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+  }
+
+  .table tbody tr:hover {
+    background-color: #f8fafc;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #475569;
+    white-space: nowrap;
+  }
+  .nav-link:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+  }
+  .nav-link-active {
+    background-color: #ecfdf5;
+    color: #047857;
+  }
+}
+
+/* ---------- Struk thermal ---------- */
+.receipt {
+  width: 58mm;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.35;
+  color: #000;
+  background: #fff;
+  padding: 3mm;
+  margin: 0 auto;
+}
+
+.receipt-80 {
+  width: 80mm;
+  font-size: 12px;
+}
+
+.receipt .row {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.receipt .divider {
+  border-top: 1px dashed #000;
+  margin: 4px 0;
+}
+
+.receipt .center {
+  text-align: center;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  .receipt {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+}
