@@ -18,33 +18,37 @@ export default async function SaleDetailPage({
   const { id } = await params;
   const { error } = await searchParams;
 
-  const { data: sale } = await supabase.from("sales").select("*").eq("id", id).maybeSingle<Sale>();
-  if (!sale) notFound();
+  const saleQuery = supabase.from("sales").select("*").eq("id", id).maybeSingle<Sale>();
 
-  // Rincian item tanpa HPP; kasir bisa membuka detail & cetak ulang struknya.
-  const { data: items } = await supabase
+  const itemsQuery = supabase
     .from("sale_items_public")
     .select("id, product_name, qty, unit_price, discount, subtotal")
     .eq("sale_id", id)
     .order("product_name");
+
+  // Laba kotor hanya dihitung untuk admin usaha (kasir tidak boleh melihat HPP).
+  const costsQuery = admin
+    ? supabase.from("sale_items").select("qty, unit_cost, subtotal").eq("sale_id", id)
+    : Promise.resolve({ data: null });
+
+  const [{ data: sale }, { data: items }, { data: costRows }] = await Promise.all([
+    saleQuery,
+    itemsQuery,
+    costsQuery,
+  ]);
+  if (!sale) notFound();
 
   const rows = (items ?? []) as Pick<
     SaleItem,
     "id" | "product_name" | "qty" | "unit_price" | "discount" | "subtotal"
   >[];
 
-  // Laba kotor hanya dihitung untuk admin usaha (kasir tidak boleh melihat HPP).
-  let profit: number | null = null;
-  if (admin) {
-    const { data: costs } = await supabase
-      .from("sale_items")
-      .select("qty, unit_cost, subtotal")
-      .eq("sale_id", id);
-    profit = (costs ?? []).reduce(
-      (sum, i) => sum + (Number(i.subtotal) - Number(i.qty) * Number(i.unit_cost)),
-      0,
-    );
-  }
+  const profit: number | null = admin
+    ? (costRows as Pick<SaleItem, "qty" | "unit_cost" | "subtotal">[] | null ?? []).reduce(
+        (sum, i) => sum + (Number(i.subtotal) - Number(i.qty) * Number(i.unit_cost)),
+        0,
+      )
+    : null;
 
   return (
     <div className="space-y-5">

@@ -16,15 +16,16 @@ export default async function ReceiptPage({
   const { id } = await params;
   const { print } = await searchParams;
 
-  const { data: sale } = await supabase.from("sales").select("*").eq("id", id).maybeSingle<Sale>();
+  const [{ data: sale }, { data: items }] = await Promise.all([
+    supabase.from("sales").select("*").eq("id", id).maybeSingle<Sale>(),
+    // sale_items_public tidak menyertakan HPP, sehingga aman dibuka untuk kasir.
+    supabase
+      .from("sale_items_public")
+      .select("id, product_name, qty, unit_price, subtotal")
+      .eq("sale_id", id)
+      .order("product_name"),
+  ]);
   if (!sale) notFound();
-
-  // sale_items_public tidak menyertakan HPP, sehingga aman dibuka untuk kasir.
-  const { data: items } = await supabase
-    .from("sale_items_public")
-    .select("id, product_name, qty, unit_price, subtotal")
-    .eq("sale_id", id)
-    .order("product_name");
 
   const rows = (items ?? []) as Pick<
     SaleItem,

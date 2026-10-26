@@ -16,6 +16,16 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
+  // Pengunjung belum login: tidak ada cookie sesi, tidak ada yang perlu
+  // di-refresh — lewati tanpa membuat klien sama sekali.
+  const hasSessionCookie = request.cookies
+    .getAll()
+    .some(({ name }) => name.startsWith("sb-") && name.includes("auth-token"));
+
+  if (!hasSessionCookie) {
+    return response;
+  }
+
   const supabase = createServerClient(url, key, {
     cookies: {
       getAll() {
@@ -31,7 +41,12 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  await supabase.auth.getUser();
+  // getUser() selalu memanggil server auth Supabase (1 round-trip jaringan untuk
+  // SETIAP request), padahal tugas middleware hanya menjaga cookie tetap segar.
+  // getSession() membaca cookie secara lokal dan hanya me-refresh token lewat
+  // jaringan saat token mau kedaluwarsa. Validasi sesi yang sesungguhnya tetap
+  // dilakukan oleh supabase.auth.getUser() di src/lib/auth.ts pada tiap halaman.
+  await supabase.auth.getSession();
 
   return response;
 }
