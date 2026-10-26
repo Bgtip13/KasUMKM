@@ -12,18 +12,11 @@ export default async function PurchaseDetailPage({
   const { supabase, tenant } = await requireTenantAdmin();
   const { id } = await params;
 
-  const { data: purchase } = await supabase
-    .from("purchases")
-    .select("*")
-    .eq("id", id)
-    .maybeSingle<Purchase>();
+  const [{ data: purchase }, { data: items }] = await Promise.all([
+    supabase.from("purchases").select("*").eq("id", id).maybeSingle<Purchase>(),
+    supabase.from("purchase_items").select("*").eq("purchase_id", id).order("product_name"),
+  ]);
   if (!purchase) notFound();
-
-  const { data: items } = await supabase
-    .from("purchase_items")
-    .select("*")
-    .eq("purchase_id", id)
-    .order("product_name");
 
   const rows = (items ?? []) as PurchaseItem[];
 
