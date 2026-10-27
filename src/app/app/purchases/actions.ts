@@ -38,6 +38,7 @@ export async function createPurchaseAction(payload: PurchasePayload): Promise<Pu
   }
 
   revalidatePath("/app");
+  revalidatePath("/app/pos");
   revalidatePath("/app/purchases");
   revalidatePath("/app/products");
   revalidatePath("/app/stock");

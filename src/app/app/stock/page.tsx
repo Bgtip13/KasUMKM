@@ -1,5 +1,6 @@
 import { requireTenantAdmin } from "@/lib/auth";
 import { formatDateTime, formatNumber } from "@/lib/format";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Product, StockMovement } from "@/lib/types";
 import { StockForm } from "./stock-form";
 
@@ -26,7 +27,7 @@ export default async function StockPage({
 }: {
   searchParams: Promise<{ product?: string }>;
 }) {
-  const { supabase, tenant } = await requireTenantAdmin();
+  const supabase = await createSupabaseServerClient();
   const sp = await searchParams;
 
   let movementQuery = supabase
@@ -39,8 +40,9 @@ export default async function StockPage({
     movementQuery = movementQuery.eq("product_id", sp.product);
   }
 
-  // Keduanya tidak saling bergantung → dijalankan berbarengan, bukan berurutan.
-  const [{ data: productData }, { data: movementData }] = await Promise.all([
+  // Keduanya tidak saling bergantung → berbarengan. Dan karena tidak butuh
+  // profil/tenant, keduanya sudah dikirim SEBELUM sesi diperiksa di bawah.
+  const dataPromise = Promise.all([
     supabase
       .from("products")
       .select("id, name, unit, stock, min_stock, cost_price, track_stock")
@@ -48,6 +50,9 @@ export default async function StockPage({
       .order("name"),
     movementQuery,
   ]);
+
+  const { tenant } = await requireTenantAdmin();
+  const [{ data: productData }, { data: movementData }] = await dataPromise;
 
   const products = (productData ?? []) as Pick<
     Product,

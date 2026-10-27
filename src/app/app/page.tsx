@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { requireTenantAdmin } from "@/lib/auth";
 import { formatDateTime, formatNumber, formatRupiah } from "@/lib/format";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { DashboardStats, Product, Sale } from "@/lib/types";
 
 export default async function DashboardPage() {
-  const { supabase, tenant } = await requireTenantAdmin();
-
-  const [{ data: statsData }, { data: recentSales }, { data: lowStock }] = await Promise.all([
+  // Ketiga query ini tidak butuh profil/tenant untuk disusun, jadi dikirim ke
+  // Supabase SEKARANG — berbarengan dengan pemeriksaan sesi di bawah. Dulu
+  // urutannya: cek sesi (1 round-trip) → ambil profil (1) → ambil data (1).
+  const supabase = await createSupabaseServerClient();
+  const queries = Promise.all([
     supabase.rpc("dashboard_stats"),
     supabase
       .from("sales")
@@ -21,6 +24,9 @@ export default async function DashboardPage() {
       .order("stock", { ascending: true })
       .limit(5),
   ]);
+
+  const { tenant } = await requireTenantAdmin();
+  const [{ data: statsData }, { data: recentSales }, { data: lowStock }] = await queries;
 
   const stats = (statsData ?? {}) as DashboardStats;
   const sales = (recentSales ?? []) as Sale[];

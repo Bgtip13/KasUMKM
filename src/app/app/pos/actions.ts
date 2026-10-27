@@ -45,6 +45,7 @@ export async function createSaleAction(payload: SalePayload): Promise<SaleResult
   }
 
   revalidatePath("/app");
+  revalidatePath("/app/pos");
   revalidatePath("/app/sales");
   revalidatePath("/app/products");
   revalidatePath("/app/stock");

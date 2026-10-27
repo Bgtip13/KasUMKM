@@ -3,6 +3,7 @@ import { Alert } from "@/components/alert";
 import { SubmitButton } from "@/components/submit-button";
 import { requireTenantAdmin } from "@/lib/auth";
 import { formatNumber, formatRupiah } from "@/lib/format";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Product } from "@/lib/types";
 import { createProductAction } from "./actions";
 
@@ -11,16 +12,20 @@ export default async function ProductsPage({
 }: {
   searchParams: Promise<{ created?: string; updated?: string; error?: string }>;
 }) {
-  const { supabase } = await requireTenantAdmin();
+  const supabase = await createSupabaseServerClient();
   const sp = await searchParams;
 
-  const { data } = await supabase
+  // Daftar produk sudah diminta ke Supabase selagi sesi + profil diperiksa,
+  // jadi satu halaman hanya menunggu satu round-trip jaringan.
+  const productsPromise = supabase
     .from("products")
     .select("*")
     .order("is_active", { ascending: false })
-    .order("name");
+    .order("name")
+    .then(({ data }) => (data ?? []) as Product[]);
 
-  const products = (data ?? []) as Product[];
+  await requireTenantAdmin();
+  const products = await productsPromise;
   const active = products.filter((p) => p.is_active);
   const inactive = products.filter((p) => !p.is_active);
 

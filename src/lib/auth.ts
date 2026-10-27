@@ -25,16 +25,20 @@ async function loadViewer(): Promise<Viewer> {
 
   const supabase = await createSupabaseServerClient();
 
-  // getClaims() memverifikasi tanda tangan JWT secara lokal terhadap JWKS yang
-  // di-cache (10 menit), sehingga TIDAK ada panggilan jaringan ke server auth
-  // Supabase di setiap navigasi — getUser() selalu mengirim 1 request penuh.
-  // Kalau proyek memakai kunci simetris atau JWKS tidak bisa diambil,
-  // getClaims() sendiri otomatis jatuh ke getUser(), jadi biayanya tidak pernah
-  // lebih mahal dari sebelumnya.
-  const { data: claimData } = await supabase.auth.getClaims();
-  const claims = claimData?.claims;
-  const user: { id: string; email?: string | null } | null = claims?.sub
-    ? { id: claims.sub, email: claims.email ?? null }
+  // getSession() hanya membaca cookie sesi dan memeriksa masa berlaku token
+  // secara LOKAL — tanpa request ke server auth Supabase. getUser() (dan
+  // getClaims() pada proyek dengan JWT simetris, yang selalu jatuh ke getUser)
+  // menambah 1 round-trip jaringan di setiap pindah menu.
+  //
+  // Keamanan tidak bergantung pada pemeriksaan ini: identitas di sini hanya
+  // dipakai untuk mengambil profil, sedangkan setiap query data dieksekusi
+  // PostgREST memakai JWT yang sama dan dibatasi oleh RLS di database. Token
+  // palsu/kedaluwarsa ditolak di sana, profilnya tidak ditemukan, lalu user
+  // diarahkan ke halaman login.
+  const { data: sessionData } = await supabase.auth.getSession();
+  const sessionUser = sessionData.session?.user;
+  const user: { id: string; email?: string | null } | null = sessionUser
+    ? { id: sessionUser.id, email: sessionUser.email ?? null }
     : null;
 
   if (!user) {

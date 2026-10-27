@@ -1,20 +1,26 @@
 import { requireTenant } from "@/lib/auth";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Product } from "@/lib/types";
 import { PosClient } from "./pos-client";
 
-export default async function PosPage() {
-  const { supabase, tenant } = await requireTenant();
+type PosProduct = Pick<
+  Product,
+  "id" | "name" | "sku" | "category" | "unit" | "sell_price" | "stock" | "track_stock"
+>;
 
-  const { data } = await supabase
+export default async function PosPage() {
+  // Daftar produk dikirim ke Supabase lebih dulu, bersamaan dengan pemeriksaan
+  // sesi + profil. Sebelumnya keduanya berurutan: 2 round-trip per klik menu.
+  const supabase = await createSupabaseServerClient();
+  const productsPromise = supabase
     .from("products")
     .select("id, name, sku, category, unit, sell_price, stock, track_stock")
     .eq("is_active", true)
-    .order("name");
+    .order("name")
+    .then(({ data }) => (data ?? []) as PosProduct[]);
 
-  const products = (data ?? []) as Pick<
-    Product,
-    "id" | "name" | "sku" | "category" | "unit" | "sell_price" | "stock" | "track_stock"
-  >[];
+  const { tenant } = await requireTenant();
+  const products = await productsPromise;
 
   return (
     <div className="space-y-4">

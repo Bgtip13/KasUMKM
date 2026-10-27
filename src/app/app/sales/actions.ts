@@ -20,6 +20,7 @@ export async function cancelSaleAction(formData: FormData) {
   }
 
   revalidatePath("/app");
+  revalidatePath("/app/pos");
   revalidatePath("/app/sales");
   revalidatePath("/app/products");
   revalidatePath("/app/stock");
