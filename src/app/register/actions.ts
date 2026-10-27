@@ -30,7 +30,7 @@ export async function registerAction(formData: FormData) {
 
   const { data: license } = await admin
     .from("license_codes")
-    .select("id, code, status")
+    .select("id, code, status, plan")
     .ilike("code", code)
     .maybeSingle();
 
@@ -69,6 +69,22 @@ export async function registerAction(formData: FormData) {
   if (tenantError || !tenant) {
     await admin.auth.admin.deleteUser(userId);
     fail(`Gagal membuat ruang usaha: ${tenantError?.message ?? "kesalahan tidak diketahui"}`);
+  }
+
+  // Paket mengikuti kode lisensi. Trial hanya berlaku 24 jam sejak aktivasi.
+  // Kolom plan/trial_ends_at datang dari migrasi 0002_plan_trial.sql; kalau
+  // migrasi itu belum dijalankan, aktivasi tetap berhasil (hanya saja trial
+  // belum dibatasi) dan pesan error-nya dicatat di log server.
+  const plan = String(license!.plan ?? "standard");
+  const trialEndsAt =
+    plan === "trial" ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() : null;
+  const { error: planError } = await admin
+    .from("tenants")
+    .update({ plan, trial_ends_at: trialEndsAt })
+    .eq("id", tenant!.id);
+
+  if (planError) {
+    console.error("Gagal menyimpan paket lisensi:", planError.message);
   }
 
   const { error: profileError } = await admin.from("profiles").upsert({

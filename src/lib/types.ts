@@ -23,6 +23,10 @@ export type Tenant = {
   tax_enabled: boolean;
   tax_rate: number;
   tax_inclusive: boolean;
+  /** Paket dari kode lisensi: standard, pro, atau trial. */
+  plan: "standard" | "pro" | "trial";
+  /** Hanya diisi untuk paket trial: batas akhir masa uji coba. */
+  trial_ends_at: string | null;
   created_at: string;
 };
 
@@ -136,7 +140,7 @@ export type LicenseCode = {
   used_by: string | null;
   created_at: string;
   used_at: string | null;
-  tenants?: { name: string } | null;
+  tenants?: { name: string; plan: string; trial_ends_at: string | null } | null;
 };
 
 export type DashboardStats = {

@@ -71,12 +71,53 @@ export async function deleteLicenseAction(formData: FormData) {
   if (!id) redirect("/owner?error=" + encodeURIComponent("Kode tidak ditemukan."));
 
   const admin = createAdminClient();
-  const { error } = await admin.from("license_codes").delete().eq("id", id).neq("status", "used");
+  // Kode yang sudah dipakai boleh dihapus dari daftar: yang dihapus hanya
+  // baris lisensinya. Usaha (tenant) beserta seluruh datanya tetap utuh dan
+  // masih terlihat di halaman "Daftar usaha".
+  const { error } = await admin.from("license_codes").delete().eq("id", id);
 
   if (error) {
     redirect("/owner?error=" + encodeURIComponent(error.message));
   }
 
   revalidatePath("/owner");
+  revalidatePath("/owner/tenants");
   redirect("/owner?deleted=1");
+}
+
+const PLANS = ["standard", "pro", "trial"] as const;
+
+/**
+ * Mengubah paket sebuah usaha. Ini satu-satunya cara mengaktifkan kembali usaha
+ * yang masa trial-nya sudah habis, karena trial hanya berlaku 24 jam.
+ */
+export async function updateTenantPlanAction(formData: FormData) {
+  await requireOwner();
+
+  const tenantId = String(formData.get("tenant_id") ?? "");
+  const plan = String(formData.get("plan") ?? "");
+
+  if (!tenantId || !PLANS.includes(plan as (typeof PLANS)[number])) {
+    redirect("/owner?error=" + encodeURIComponent("Paket tidak valid."));
+  }
+
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("tenants")
+    .update({
+      plan,
+      // Memberi paket trial selalu memulai 24 jam baru dari sekarang.
+      trial_ends_at:
+        plan === "trial" ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() : null,
+    })
+    .eq("id", tenantId);
+
+  if (error) {
+    redirect("/owner?error=" + encodeURIComponent(error.message));
+  }
+
+  revalidatePath("/owner");
+  revalidatePath("/owner/tenants");
+  revalidatePath("/app", "layout");
+  redirect("/owner?saved=1");
 }

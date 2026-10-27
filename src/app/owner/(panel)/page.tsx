@@ -3,9 +3,14 @@ import { CopyButton } from "@/components/copy-button";
 import { SubmitButton } from "@/components/submit-button";
 import { requireOwner } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { formatDate } from "@/lib/format";
+import { formatDate, formatDateTime } from "@/lib/format";
 import type { LicenseCode } from "@/lib/types";
-import { createLicensesAction, deleteLicenseAction, revokeLicenseAction } from "../actions";
+import {
+  createLicensesAction,
+  deleteLicenseAction,
+  revokeLicenseAction,
+  updateTenantPlanAction,
+} from "../actions";
 
 const statusStyle: Record<string, string> = {
   unused: "bg-emerald-50 text-emerald-700",
@@ -16,7 +21,13 @@ const statusStyle: Record<string, string> = {
 export default async function OwnerLicensesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ created?: string; error?: string; revoked?: string; deleted?: string }>;
+  searchParams: Promise<{
+    created?: string;
+    error?: string;
+    revoked?: string;
+    deleted?: string;
+    saved?: string;
+  }>;
 }) {
   await requireOwner();
   const params = await searchParams;
@@ -24,7 +35,7 @@ export default async function OwnerLicensesPage({
 
   const { data } = await admin
     .from("license_codes")
-    .select("*, tenants(name)")
+    .select("*, tenants(name, plan, trial_ends_at)")
     .order("created_at", { ascending: false });
 
   const licenses = (data ?? []) as LicenseCode[];
@@ -46,6 +57,7 @@ export default async function OwnerLicensesPage({
       )}
       {params.revoked && <Alert tone="info">Kode lisensi dinonaktifkan.</Alert>}
       {params.deleted && <Alert tone="info">Kode lisensi dihapus.</Alert>}
+      {params.saved && <Alert tone="success">Paket usaha diperbarui.</Alert>}
       {params.error && <Alert tone="error">{params.error}</Alert>}
 
       <div className="grid gap-3 sm:grid-cols-3">
@@ -131,7 +143,17 @@ export default async function OwnerLicensesPage({
               {licenses.map((l) => (
                 <tr key={l.id}>
                   <td className="font-mono font-medium">{l.code}</td>
-                  <td className="capitalize">{l.plan}</td>
+                  <td>
+                    <span className="capitalize">{l.plan}</span>
+                    {l.status === "used" && l.tenants && (
+                      <div className="text-xs text-slate-500">
+                        aktif: <span className="capitalize">{l.tenants.plan}</span>
+                        {l.tenants.plan === "trial" && l.tenants.trial_ends_at && (
+                          <> · s.d. {formatDateTime(l.tenants.trial_ends_at)}</>
+                        )}
+                      </div>
+                    )}
+                  </td>
                   <td>
                     <span className={`badge ${statusStyle[l.status]}`}>
                       {l.status === "unused" ? "belum dipakai" : l.status}
@@ -151,14 +173,38 @@ export default async function OwnerLicensesPage({
                           </button>
                         </form>
                       )}
-                      {l.status !== "used" && (
-                        <form action={deleteLicenseAction}>
-                          <input type="hidden" name="id" value={l.id} />
-                          <button type="submit" className="btn btn-outline btn-sm">
-                            Hapus
-                          </button>
+                      {l.tenant_id && (
+                        <form action={updateTenantPlanAction} className="flex items-center gap-1">
+                          <input type="hidden" name="tenant_id" value={l.tenant_id} />
+                          <select
+                            name="plan"
+                            defaultValue={l.tenants?.plan ?? l.plan}
+                            className="select h-8 w-24 py-1 text-xs"
+                            aria-label={`Paket untuk ${l.tenants?.name ?? "usaha ini"}`}
+                          >
+                            <option value="standard">Standard</option>
+                            <option value="pro">Pro</option>
+                            <option value="trial">Trial 24 jam</option>
+                          </select>
+                          <SubmitButton className="btn btn-outline btn-sm" pendingText="…">
+                            Ubah
+                          </SubmitButton>
                         </form>
                       )}
+                      <form action={deleteLicenseAction}>
+                        <input type="hidden" name="id" value={l.id} />
+                        <SubmitButton
+                          className="btn btn-danger btn-sm"
+                          pendingText="Menghapus…"
+                          confirmText={
+                            l.status === "used"
+                              ? "Hapus kode ini dari daftar? Usaha dan seluruh datanya TIDAK ikut terhapus."
+                              : "Hapus kode lisensi ini?"
+                          }
+                        >
+                          Hapus
+                        </SubmitButton>
+                      </form>
                     </div>
                   </td>
                 </tr>

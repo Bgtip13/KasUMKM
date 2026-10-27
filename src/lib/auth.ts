@@ -86,6 +86,21 @@ export function canViewSales(profile: Profile | null) {
   return profile?.permissions?.sales === true;
 }
 
+/**
+ * Paket trial hanya berlaku 24 jam sejak kode lisensi diaktifkan.
+ * Paket standard dan pro tidak punya batas waktu.
+ */
+export function trialExpired(tenant: Tenant | null) {
+  if (!tenant || tenant.plan !== "trial" || !tenant.trial_ends_at) return false;
+  return new Date(tenant.trial_ends_at).getTime() <= Date.now();
+}
+
+/** Sisa masa trial dalam milidetik (0 kalau sudah habis / bukan trial). */
+export function trialRemainingMs(tenant: Tenant | null) {
+  if (!tenant || tenant.plan !== "trial" || !tenant.trial_ends_at) return 0;
+  return Math.max(new Date(tenant.trial_ends_at).getTime() - Date.now(), 0);
+}
+
 export async function requireTenant() {
   const viewer = await getViewer();
 
@@ -99,6 +114,11 @@ export async function requireTenant() {
 
   if (!viewer.profile?.tenant_id || !viewer.tenant) {
     redirect("/register?inactive=1");
+  }
+
+  // Trial habis → seluruh /app dialihkan ke halaman penjelasan.
+  if (trialExpired(viewer.tenant)) {
+    redirect("/masa-trial-berakhir");
   }
 
   return {

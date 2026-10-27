@@ -2,6 +2,7 @@ import { canViewSales, isTenantAdmin, requireTenant } from "@/lib/auth";
 import { Logo } from "@/components/logo";
 import { AppNav } from "@/components/app-nav";
 import { SignOutForm } from "@/components/sign-out";
+import { TrialBanner } from "@/components/trial-banner";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const { tenant, user, profile } = await requireTenant();
@@ -35,6 +36,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       </aside>
 
       <div className="min-w-0 flex-1">
+        {tenant.plan === "trial" && tenant.trial_ends_at && (
+          <TrialBanner endsAt={tenant.trial_ends_at} />
+        )}
         <main className="mx-auto max-w-6xl px-4 py-6 print:max-w-none print:p-0">{children}</main>
         <div className="border-t border-slate-200 px-4 py-3 text-center print:hidden md:hidden">
           <SignOutForm redirectTo="/login" />
