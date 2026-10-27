@@ -85,6 +85,61 @@ export async function deleteLicenseAction(formData: FormData) {
   redirect("/owner?deleted=1");
 }
 
+/**
+ * Menghapus satu usaha beserta seluruh datanya.
+ *
+ * Yang dihapus: baris tenant (produk, penjualan, pembelian, stok, kas, dan
+ * dokumen ikut terhapus lewat on delete cascade), profil admin/kasirnya, akun
+ * login mereka, serta kode lisensi yang menunjuk ke usaha itu — supaya tidak
+ * ada akun yang bisa masuk ke usaha yang sudah tidak ada.
+ *
+ * Tidak bisa dibatalkan.
+ */
+export async function deleteTenantAction(formData: FormData) {
+  await requireOwner();
+
+  const tenantId = String(formData.get("tenant_id") ?? "");
+  const name = String(formData.get("name") ?? "").trim();
+
+  if (!tenantId) {
+    redirect("/owner/tenants?error=" + encodeURIComponent("Usaha tidak ditemukan."));
+  }
+
+  const admin = createAdminClient();
+
+  const { data: profiles } = await admin
+    .from("profiles")
+    .select("id, role")
+    .eq("tenant_id", tenantId);
+
+  // Akun pemilik platform tidak pernah ikut terhapus, meskipun ia terhubung
+  // ke tenant ini.
+  const userIds = (profiles ?? [])
+    .filter((p) => p.role !== "owner")
+    .map((p) => p.id as string);
+
+  const { error } = await admin.from("tenants").delete().eq("id", tenantId);
+
+  if (error) {
+    redirect("/owner/tenants?error=" + encodeURIComponent(error.message));
+  }
+
+  // Lisensi yang menunjuk ke usaha ini tidak boleh tertinggal sebagai baris
+  // "sudah dipakai" tanpa usaha.
+  await admin.from("license_codes").delete().eq("tenant_id", tenantId);
+
+  for (const userId of userIds) {
+    const { error: userError } = await admin.auth.admin.deleteUser(userId);
+    if (userError) {
+      console.error(`Gagal menghapus akun ${userId}:`, userError.message);
+    }
+  }
+
+  revalidatePath("/owner/tenants");
+  revalidatePath("/owner");
+  redirect("/owner/tenants?deleted=" + encodeURIComponent(name || "Usaha"));
+}
+
 const PLANS = ["standard", "pro", "trial"] as const;
 
 /**
