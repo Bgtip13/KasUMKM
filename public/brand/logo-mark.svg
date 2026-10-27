@@ -1,0 +1,27 @@
+<!--
+  LOGO DUMMY. Ganti isi file ini dengan logo Anda (SVG, kotak 1:1).
+  Dipakai di sidebar, halaman masuk, halaman pendaftaran, panel pemilik,
+  dan landing page — cukup ganti file ini, tidak perlu ubah kode.
+  Kalau Anda punya PNG/JPG, timpa dengan nama yang sama (logo-mark.png) lalu
+  beri tahu saya agar referensinya disesuaikan.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Logo KasUMKM">
+  <defs>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34d399" />
+      <stop offset="1" stop-color="#047857" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#mark)" />
+  <path
+    d="M22 14h20a4 4 0 0 1 4 4v33l-4-2.5-4 2.5-4-2.5-4 2.5-4-2.5-4 2.5-4-2.5V18a4 4 0 0 1 4-4Z"
+    fill="#ffffff"
+    opacity="0.96"
+  />
+  <path
+    d="M27 25h10M27 32h10M27 39h6"
+    stroke="#047857"
+    stroke-width="2.75"
+    stroke-linecap="round"
+  />
+</svg>

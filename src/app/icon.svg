@@ -1,0 +1,14 @@
+<!--
+  FAVICON DUMMY. Ganti isi file ini dengan ikon Anda (SVG, kotak 1:1).
+  Next.js otomatis memakai file ini sebagai favicon di semua halaman.
+  Kalau Anda punya .png/.ico, tambahkan src/app/icon.png atau
+  src/app/favicon.ico dan hapus file ini — tidak perlu ubah kode lain.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="KasUMKM">
+  <rect width="64" height="64" rx="16" fill="#059669" />
+  <path
+    d="M22 14h20a4 4 0 0 1 4 4v33l-4-2.5-4 2.5-4-2.5-4 2.5-4-2.5-4 2.5-4-2.5V18a4 4 0 0 1 4-4Z"
+    fill="#ffffff"
+  />
+  <path d="M27 25h10M27 32h10M27 39h6" stroke="#059669" stroke-width="3" stroke-linecap="round" />
+</svg>
