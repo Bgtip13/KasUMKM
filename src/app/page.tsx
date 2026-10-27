@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Boxes, ChartColumn, ScanLine, ShieldCheck, Sparkles, Truck, Wallet } from "lucide-react";
 import { getViewer } from "@/lib/auth";
 import { supabaseConfigured } from "@/lib/supabase/server";
 import { Logo } from "@/components/logo";
@@ -19,26 +20,32 @@ export default async function LandingPage() {
     {
       title: "Kasir + struk thermal",
       desc: "Transaksi cepat, cetak ke printer thermal 58mm/80mm langsung dari browser.",
+      Icon: ScanLine,
     },
     {
       title: "Stok lengkap",
       desc: "Stok masuk, keluar, dan stok opname dengan kartu stok yang bisa diaudit.",
+      Icon: Boxes,
     },
     {
       title: "Pembelian & pemasok",
       desc: "Catat pembelian, HPP dihitung otomatis dengan rata-rata bergerak.",
+      Icon: Truck,
     },
     {
       title: "Laba rugi otomatis",
       desc: "Omzet, HPP, laba kotor, biaya operasional, dan laba bersih per periode.",
+      Icon: ChartColumn,
     },
     {
       title: "Kas di luar transaksi",
       desc: "Catat pemasukan dan pengeluaran seperti sewa, listrik, dan modal.",
+      Icon: Wallet,
     },
     {
       title: "Data terpisah per lisensi",
       desc: "Setiap kode lisensi punya ruang data sendiri yang tidak bisa saling lihat.",
+      Icon: ShieldCheck,
     },
   ];
 
@@ -72,7 +79,10 @@ export default async function LandingPage() {
 
         <div className="grid items-center gap-10 md:grid-cols-2">
           <div>
-            <span className="badge bg-emerald-50 text-emerald-700">Untuk UMKM Indonesia</span>
+            <span className="badge bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
+              <Sparkles className="h-3 w-3" aria-hidden="true" />
+              Untuk UMKM Indonesia
+            </span>
             <h1 className="mt-4 text-4xl font-bold tracking-tight text-slate-900 md:text-5xl">
               Pembukuan rapi, tanpa bikin repot.
             </h1>
@@ -99,7 +109,10 @@ export default async function LandingPage() {
           <div className="grid gap-3 sm:grid-cols-2">
             {features.map((f) => (
               <div key={f.title} className="card card-pad">
-                <h3 className="text-sm font-semibold text-slate-900">{f.title}</h3>
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+                  <f.Icon className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+                </div>
+                <h3 className="mt-3 text-sm font-semibold text-slate-900">{f.title}</h3>
                 <p className="mt-1 text-sm text-slate-600">{f.desc}</p>
               </div>
             ))}

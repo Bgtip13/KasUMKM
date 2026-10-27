@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { X } from "lucide-react";
 import { formatNumber, formatRupiah } from "@/lib/format";
 import { createSaleAction } from "./actions";
 
@@ -220,10 +221,10 @@ export function PosClient({
                 <button
                   type="button"
                   onClick={() => removeLine(l.id)}
-                  className="text-xs text-slate-400 hover:text-rose-600"
+                  className="rounded-md p-0.5 text-slate-400 transition-colors hover:bg-rose-50 hover:text-rose-600"
                   aria-label={`Hapus ${l.name}`}
                 >
-                  ✕
+                  <X className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
               <div className="mt-2 flex items-center gap-2">

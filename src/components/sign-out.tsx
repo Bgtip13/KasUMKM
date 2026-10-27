@@ -1,5 +1,6 @@
-import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { LogOut } from "lucide-react";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 async function signOutAction(formData: FormData) {
   "use server";
@@ -13,7 +14,11 @@ export function SignOutForm({ redirectTo = "/login" }: { redirectTo?: string }) 
   return (
     <form action={signOutAction}>
       <input type="hidden" name="redirectTo" value={redirectTo} />
-      <button type="submit" className="text-sm text-slate-500 hover:text-rose-600">
+      <button
+        type="submit"
+        className="inline-flex items-center gap-1.5 text-sm text-slate-500 transition-colors hover:text-rose-600"
+      >
+        <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
         Keluar
       </button>
     </form>
