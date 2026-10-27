@@ -33,12 +33,23 @@ export default async function OwnerLicensesPage({
   const params = await searchParams;
   const admin = createAdminClient();
 
-  const { data } = await admin
-    .from("license_codes")
-    .select("*, tenants(name, plan, trial_ends_at)")
-    .order("created_at", { ascending: false });
+  // Dua query terpisah: daftar lisensi dan info paket tiap usaha. Kalau kolom
+  // plan/trial_ends_at belum ada (migrasi 0002 belum dijalankan), hanya query
+  // kedua yang gagal — daftar kode dan tombol hapus tetap berfungsi.
+  const [{ data }, { data: planData, error: planError }] = await Promise.all([
+    admin.from("license_codes").select("*, tenants(name)").order("created_at", { ascending: false }),
+    admin.from("tenants").select("id, plan, trial_ends_at"),
+  ]);
 
-  const licenses = (data ?? []) as LicenseCode[];
+  type TenantPlan = { id: string; plan: string; trial_ends_at: string | null };
+  const plans = new Map<string, TenantPlan>(
+    ((planData ?? []) as TenantPlan[]).map((t) => [t.id, t]),
+  );
+
+  const licenses = ((data ?? []) as LicenseCode[]).map((l) => ({
+    ...l,
+    activePlan: l.tenant_id ? plans.get(l.tenant_id) ?? null : null,
+  }));
   const available = licenses.filter((l) => l.status === "unused").length;
   const used = licenses.filter((l) => l.status === "used").length;
   const revoked = licenses.filter((l) => l.status === "revoked").length;
@@ -58,6 +69,12 @@ export default async function OwnerLicensesPage({
       {params.revoked && <Alert tone="info">Kode lisensi dinonaktifkan.</Alert>}
       {params.deleted && <Alert tone="info">Kode lisensi dihapus.</Alert>}
       {params.saved && <Alert tone="success">Paket usaha diperbarui.</Alert>}
+      {planError && (
+        <Alert tone="warning">
+          Info paket belum bisa dibaca ({planError.message}). Jalankan{" "}
+          <code>supabase/migrations/0002_plan_trial.sql</code> di Supabase SQL Editor.
+        </Alert>
+      )}
       {params.error && <Alert tone="error">{params.error}</Alert>}
 
       <div className="grid gap-3 sm:grid-cols-3">
@@ -145,11 +162,11 @@ export default async function OwnerLicensesPage({
                   <td className="font-mono font-medium">{l.code}</td>
                   <td>
                     <span className="capitalize">{l.plan}</span>
-                    {l.status === "used" && l.tenants && (
+                    {l.activePlan && (
                       <div className="text-xs text-slate-500">
-                        aktif: <span className="capitalize">{l.tenants.plan}</span>
-                        {l.tenants.plan === "trial" && l.tenants.trial_ends_at && (
-                          <> · s.d. {formatDateTime(l.tenants.trial_ends_at)}</>
+                        aktif: <span className="capitalize">{l.activePlan.plan}</span>
+                        {l.activePlan.plan === "trial" && l.activePlan.trial_ends_at && (
+                          <> · s.d. {formatDateTime(l.activePlan.trial_ends_at)}</>
                         )}
                       </div>
                     )}
@@ -178,7 +195,7 @@ export default async function OwnerLicensesPage({
                           <input type="hidden" name="tenant_id" value={l.tenant_id} />
                           <select
                             name="plan"
-                            defaultValue={l.tenants?.plan ?? l.plan}
+                            defaultValue={l.activePlan?.plan ?? l.plan}
                             className="select h-8 w-24 py-1 text-xs"
                             aria-label={`Paket untuk ${l.tenants?.name ?? "usaha ini"}`}
                           >

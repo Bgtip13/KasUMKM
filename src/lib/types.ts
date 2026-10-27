@@ -140,7 +140,7 @@ export type LicenseCode = {
   used_by: string | null;
   created_at: string;
   used_at: string | null;
-  tenants?: { name: string; plan: string; trial_ends_at: string | null } | null;
+  tenants?: { name: string } | null;
 };
 
 export type DashboardStats = {
