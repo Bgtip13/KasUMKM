@@ -1,8 +1,24 @@
 @import "tailwindcss";
 
+/*
+ * Inter di-self-host dari public/fonts.
+ *
+ * Sengaja TIDAK memakai `next/font/google`: loader itu mengambil CSS dari
+ * fonts.googleapis.com saat `next build`, dan di mesin build Vercel permintaan
+ * tersebut gagal ("An error occurred in next/font"). Berkas font disimpan di
+ * repo, jadi build sepenuhnya offline dan tampilan tetap sama di mana pun.
+ */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  /* Satu berkas variabel menangani semua bobot lewat sumbu wght. */
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/inter-variable.woff2") format("woff2");
+}
+
 @theme {
-  --font-sans: var(--font-inter), "Inter", "Roboto", "Segoe UI", ui-sans-serif, system-ui,
-    -apple-system, sans-serif;
+  --font-sans: "Inter", "Roboto", "Segoe UI", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 
   /* Palet merah Accurate */
