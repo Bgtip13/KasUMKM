@@ -44,8 +44,8 @@ export default async function SalesPage({
     <div className="space-y-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold">Riwayat penjualan</h1>
-          <p className="text-sm text-slate-500">Semua transaksi penjualan pada rentang tanggal ini.</p>
+          <h1 className="text-lg font-semibold">Riwayat penjualan</h1>
+          <p className="text-xs text-slate-500">Semua transaksi penjualan pada rentang tanggal ini.</p>
         </div>
         <Link href="/app/pos" className="btn btn-primary">
           + Transaksi baru
@@ -107,7 +107,7 @@ export default async function SalesPage({
                   <td>
                     <Link
                       href={`/app/sales/${s.id}`}
-                      className="font-mono text-xs font-medium text-emerald-700 hover:underline"
+                      className="font-mono text-xs font-medium text-brand-700 hover:underline"
                     >
                       {s.invoice_no}
                     </Link>

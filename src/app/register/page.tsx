@@ -20,7 +20,7 @@ export default async function RegisterPage({
 
         <div className="card card-pad">
           <h1 className="text-lg font-semibold">Aktivasi kode lisensi</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-xs text-slate-500">
             Masukkan kode yang Anda terima saat membeli aplikasi. Kode ini membuat ruang data usaha
             Anda sendiri.
           </p>
@@ -123,7 +123,7 @@ export default async function RegisterPage({
 
           <p className="mt-5 border-t border-slate-100 pt-4 text-sm text-slate-600">
             Sudah punya akun?{" "}
-            <Link href="/login" className="font-medium text-emerald-700 hover:underline">
+            <Link href="/login" className="font-medium text-brand-700 hover:underline">
               Masuk di sini
             </Link>
           </p>

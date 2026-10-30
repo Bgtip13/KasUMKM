@@ -44,8 +44,8 @@ export default async function SettingsPage({
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-xl font-semibold">Pengaturan usaha</h1>
-        <p className="text-sm text-slate-500">
+        <h1 className="text-lg font-semibold">Pengaturan usaha</h1>
+        <p className="text-xs text-slate-500">
           Data ini tampil di struk dan dipakai untuk perhitungan tanggal laporan.
         </p>
       </div>
@@ -137,7 +137,7 @@ export default async function SettingsPage({
             </div>
           </div>
 
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+          <div className="rounded border border-slate-200 bg-slate-50 p-3">
             <label className="flex items-center gap-2 text-sm font-medium">
               <input type="checkbox" name="tax_enabled" defaultChecked={pphActive} />
               Kenakan PPN pada transaksi

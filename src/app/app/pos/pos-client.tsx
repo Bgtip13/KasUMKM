@@ -170,7 +170,7 @@ export function PosClient({
                   type="button"
                   onClick={() => addProduct(p)}
                   disabled={outOfStock}
-                  className="rounded-lg border border-slate-200 p-3 text-left transition hover:border-emerald-300 hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded border border-slate-200 p-3 text-left transition hover:border-brand-300 hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <div className="line-clamp-2 text-sm font-medium text-slate-800">{p.name}</div>
                   <div className="mt-1 text-sm font-semibold text-emerald-700">
@@ -185,7 +185,7 @@ export function PosClient({
               );
             })}
             {filtered.length === 0 && (
-              <p className="col-span-full py-6 text-center text-sm text-slate-500">
+              <p className="col-span-full py-6 text-center text-xs text-slate-500">
                 Produk tidak ditemukan. Tambahkan dulu di menu Produk.
               </p>
             )}
@@ -209,26 +209,26 @@ export function PosClient({
 
         <div className="mt-3 space-y-2">
           {cart.length === 0 && (
-            <p className="rounded-lg border border-dashed border-slate-200 px-3 py-6 text-center text-sm text-slate-500">
+            <p className="rounded border border-dashed border-slate-200 px-3 py-6 text-center text-xs text-slate-500">
               Belum ada item. Klik produk di sebelah kiri.
             </p>
           )}
 
           {cart.map((l) => (
-            <div key={l.id} className="rounded-lg border border-slate-200 p-2">
+            <div key={l.id} className="rounded border border-slate-200 p-2">
               <div className="flex items-start justify-between gap-2">
                 <div className="text-sm font-medium text-slate-800">{l.name}</div>
                 <button
                   type="button"
                   onClick={() => removeLine(l.id)}
-                  className="rounded-md p-0.5 text-slate-400 transition-colors hover:bg-rose-50 hover:text-rose-600"
+                  className="rounded-sm p-0.5 text-slate-400 transition-colors hover:bg-rose-50 hover:text-rose-600"
                   aria-label={`Hapus ${l.name}`}
                 >
                   <X className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
               <div className="mt-2 flex items-center gap-2">
-                <div className="flex items-center rounded-md border border-slate-200">
+                <div className="flex items-center rounded-sm border border-slate-200">
                   <button
                     type="button"
                     className="px-2 py-1 text-slate-600"
@@ -258,7 +258,7 @@ export function PosClient({
                     value={l.price}
                     onChange={(e) => updateLine(l.id, { price: Number(e.target.value) || 0 })}
                     inputMode="numeric"
-                    className="w-24 rounded-md border border-slate-200 px-2 py-1 text-right text-sm text-slate-800 outline-none"
+                    className="w-24 rounded-sm border border-slate-200 px-2 py-1 text-right text-sm text-slate-800 outline-none"
                   />
                 </div>
                 <div className="ml-auto text-sm font-medium">{formatRupiah(l.price * l.qty)}</div>
@@ -354,14 +354,14 @@ export function PosClient({
           </div>
 
           {paidValue < total && (
-            <p className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800">
+            <p className="rounded bg-amber-50 px-3 py-2 text-xs text-amber-800">
               Pembayaran kurang {formatRupiah(total - paidValue)} — transaksi akan tercatat sebagai
               piutang.
             </p>
           )}
 
           {error && (
-            <p className="rounded-lg bg-rose-50 px-3 py-2 text-xs text-rose-700">{error}</p>
+            <p className="rounded bg-rose-50 px-3 py-2 text-xs text-rose-700">{error}</p>
           )}
 
           <button

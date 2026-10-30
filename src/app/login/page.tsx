@@ -20,7 +20,7 @@ export default async function LoginPage({
 
         <div className="card card-pad">
           <h1 className="text-lg font-semibold">Masuk sebagai admin</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-xs text-slate-500">
             Gunakan email dan password yang didaftarkan dengan kode lisensi Anda.
           </p>
 
@@ -65,13 +65,13 @@ export default async function LoginPage({
           <div className="mt-5 space-y-2 border-t border-slate-100 pt-4 text-sm text-slate-600">
             <p>
               Belum punya akun?{" "}
-              <Link href="/register" className="font-medium text-emerald-700 hover:underline">
+              <Link href="/register" className="font-medium text-brand-700 hover:underline">
                 Aktivasi kode lisensi
               </Link>
             </p>
             <p>
               Pemilik aplikasi?{" "}
-              <Link href="/owner/login" className="font-medium text-emerald-700 hover:underline">
+              <Link href="/owner/login" className="font-medium text-brand-700 hover:underline">
                 Panel penjual
               </Link>
             </p>

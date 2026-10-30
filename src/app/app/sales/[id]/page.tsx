@@ -54,11 +54,11 @@ export default async function SaleDetailPage({
     <div className="space-y-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <Link href="/app/sales" className="text-sm text-slate-500 hover:text-slate-800">
+          <Link href="/app/sales" className="text-xs text-slate-500 hover:text-slate-800">
             ← Riwayat penjualan
           </Link>
-          <h1 className="mt-1 font-mono text-xl font-semibold">{sale.invoice_no}</h1>
-          <p className="text-sm text-slate-500">
+          <h1 className="mt-1 font-mono text-lg font-semibold">{sale.invoice_no}</h1>
+          <p className="text-xs text-slate-500">
             {formatDateTime(sale.sold_at, tenant.timezone)} · {sale.customer_name}
           </p>
         </div>
@@ -161,7 +161,7 @@ export default async function SaleDetailPage({
       </div>
 
       {admin && (
-        <div className="rounded-lg border border-slate-200 bg-white p-3 text-xs text-slate-500">
+        <div className="rounded border border-slate-200 bg-white p-3 text-xs text-slate-500">
           Membatalkan transaksi akan menghapus transaksi ini dan mengembalikan stok produk ke jumlah
           sebelumnya. Riwayat pembatalan tetap tercatat di kartu stok.
         </div>

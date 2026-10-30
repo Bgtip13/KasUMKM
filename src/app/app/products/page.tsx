@@ -32,8 +32,8 @@ export default async function ProductsPage({
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-xl font-semibold">Produk</h1>
-        <p className="text-sm text-slate-500">
+        <h1 className="text-lg font-semibold">Produk</h1>
+        <p className="text-xs text-slate-500">
           {formatNumber(active.length)} produk aktif, {formatNumber(inactive.length)} nonaktif.
         </p>
       </div>

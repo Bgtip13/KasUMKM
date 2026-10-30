@@ -47,8 +47,8 @@ export default async function ReportsPage({
     <div className="space-y-5">
       <div className="no-print flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold">Laporan</h1>
-          <p className="text-sm text-slate-500">
+          <h1 className="text-lg font-semibold">Laporan</h1>
+          <p className="text-xs text-slate-500">
             Laba rugi dan arus kas {formatDate(`${from}T00:00:00`, tenant.timezone)} —{" "}
             {formatDate(`${to}T00:00:00`, tenant.timezone)}
           </p>
@@ -107,7 +107,7 @@ export default async function ReportsPage({
             <div className="text-xs font-medium uppercase tracking-wide text-slate-500">
               {c.label}
             </div>
-            <div className={`mt-1 text-xl font-semibold ${c.tone ?? "text-slate-900"}`}>
+            <div className={`mt-1 text-lg font-semibold ${c.tone ?? "text-slate-900"}`}>
               {c.value}
             </div>
             <div className="mt-1 text-xs text-slate-500">{c.sub}</div>
@@ -171,7 +171,7 @@ export default async function ReportsPage({
         <div className="card card-pad">
           <h2 className="font-semibold">Rincian biaya</h2>
           {(report.expense_by_category ?? []).length === 0 ? (
-            <p className="mt-3 text-sm text-slate-500">Belum ada biaya operasional tercatat.</p>
+            <p className="mt-3 text-xs text-slate-500">Belum ada biaya operasional tercatat.</p>
           ) : (
             <table className="table mt-3">
               <thead>
@@ -220,7 +220,7 @@ export default async function ReportsPage({
         <div className="card card-pad">
           <h2 className="font-semibold">Produk terlaris</h2>
           {(report.top_products ?? []).length === 0 ? (
-            <p className="mt-3 text-sm text-slate-500">Belum ada penjualan pada periode ini.</p>
+            <p className="mt-3 text-xs text-slate-500">Belum ada penjualan pada periode ini.</p>
           ) : (
             <table className="table mt-3">
               <thead>
@@ -248,7 +248,7 @@ export default async function ReportsPage({
         <div className="card card-pad">
           <h2 className="font-semibold">Penjualan harian</h2>
           {(report.daily_sales ?? []).length === 0 ? (
-            <p className="mt-3 text-sm text-slate-500">Belum ada data.</p>
+            <p className="mt-3 text-xs text-slate-500">Belum ada data.</p>
           ) : (
             <table className="table mt-3">
               <thead>
@@ -268,7 +268,7 @@ export default async function ReportsPage({
                     <td>
                       <div className="h-2 w-full rounded bg-slate-100">
                         <div
-                          className="h-2 rounded bg-emerald-500"
+                          className="h-2 rounded bg-brand-500"
                           style={{ width: `${Math.max((Number(d.total) / maxDaily) * 100, 4)}%` }}
                         />
                       </div>

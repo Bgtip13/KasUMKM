@@ -162,7 +162,7 @@ export function StockForm({ products }: { products: ProductOption[] }) {
 
       {message && (
         <p
-          className={`mt-3 rounded-lg px-3 py-2 text-sm ${
+          className={`mt-3 rounded px-3 py-2 text-sm ${
             message.tone === "ok" ? "bg-emerald-50 text-emerald-800" : "bg-rose-50 text-rose-700"
           }`}
         >

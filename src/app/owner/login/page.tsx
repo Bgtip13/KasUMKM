@@ -20,7 +20,7 @@ export default async function OwnerLoginPage({
 
         <div className="card card-pad">
           <h1 className="text-lg font-semibold">Panel pemilik aplikasi</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-xs text-slate-500">
             Kelola kode lisensi yang Anda jual. Hanya email pemilik yang diizinkan masuk.
           </p>
 
@@ -76,7 +76,7 @@ export default async function OwnerLoginPage({
           </form>
 
           <p className="mt-5 border-t border-slate-100 pt-4 text-sm text-slate-600">
-            <Link href="/login" className="font-medium text-emerald-700 hover:underline">
+            <Link href="/login" className="font-medium text-brand-700 hover:underline">
               Kembali ke login admin usaha
             </Link>
           </p>

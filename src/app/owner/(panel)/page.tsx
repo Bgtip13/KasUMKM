@@ -57,8 +57,8 @@ export default async function OwnerLicensesPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-semibold">Kode lisensi</h1>
-        <p className="text-sm text-slate-500">
+        <h1 className="text-lg font-semibold">Kode lisensi</h1>
+        <p className="text-xs text-slate-500">
           Setiap kode yang diaktivasi membuat satu ruang usaha dengan data yang terpisah.
         </p>
       </div>
@@ -84,15 +84,15 @@ export default async function OwnerLicensesPage({
           { label: "Dinonaktifkan", value: revoked, tone: "text-rose-700" },
         ].map((s) => (
           <div key={s.label} className="card card-pad">
-            <div className="text-sm text-slate-500">{s.label}</div>
-            <div className={`mt-1 text-2xl font-semibold ${s.tone}`}>{s.value}</div>
+            <div className="text-xs text-slate-500">{s.label}</div>
+            <div className={`mt-1 text-lg font-semibold ${s.tone}`}>{s.value}</div>
           </div>
         ))}
       </div>
 
       <div className="card card-pad">
         <h2 className="font-semibold">Buat kode baru</h2>
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="mt-1 text-xs text-slate-500">
           Berikan kode ini kepada pembeli. Mereka mengaktivasinya di halaman{" "}
           <code>/register</code>.
         </p>

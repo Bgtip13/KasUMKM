@@ -25,8 +25,8 @@ export default async function PosPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-semibold">Kasir</h1>
-        <p className="text-sm text-slate-500">
+        <h1 className="text-lg font-semibold">Kasir</h1>
+        <p className="text-xs text-slate-500">
           Pilih produk, atur jumlah, lalu simpan transaksi. Struk thermal siap dicetak.
         </p>
       </div>

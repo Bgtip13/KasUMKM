@@ -29,11 +29,11 @@ export default async function EditProductPage({
   return (
     <div className="space-y-5">
       <div>
-        <Link href="/app/products" className="text-sm text-slate-500 hover:text-slate-800">
+        <Link href="/app/products" className="text-xs text-slate-500 hover:text-slate-800">
           ← Produk
         </Link>
-        <h1 className="mt-1 text-xl font-semibold">{product.name}</h1>
-        <p className="text-sm text-slate-500">
+        <h1 className="mt-1 text-lg font-semibold">{product.name}</h1>
+        <p className="text-xs text-slate-500">
           Stok saat ini {formatNumber(product.stock)} {product.unit} — ubah lewat menu Stok agar
           tercatat di kartu stok.
         </p>

@@ -21,10 +21,10 @@ export function Alert({
 
   return (
     <div
-      className={`flex items-start gap-2 rounded-xl border px-3 py-2.5 text-sm ${box}`}
+      className={`flex items-start gap-1.5 rounded border-l-2 px-2.5 py-1.5 text-xs ${box}`}
       role="alert"
     >
-      <Icon className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={2} aria-hidden="true" />
+      <Icon className="mt-0.5 h-3.5 w-3.5 shrink-0" strokeWidth={2} aria-hidden="true" />
       <div className="min-w-0">{children}</div>
     </div>
   );

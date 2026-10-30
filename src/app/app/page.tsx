@@ -67,8 +67,8 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold">Ringkasan {tenant.name}</h1>
-          <p className="text-sm text-slate-500">Kondisi usaha Anda hari ini.</p>
+          <h1 className="text-lg font-semibold">Ringkasan {tenant.name}</h1>
+          <p className="text-xs text-slate-500">Kondisi usaha Anda hari ini.</p>
         </div>
         <div className="flex gap-2">
           <Link href="/app/pos" className="btn btn-primary">
@@ -86,7 +86,7 @@ export default async function DashboardPage() {
             <div className="text-xs font-medium uppercase tracking-wide text-slate-500">
               {c.label}
             </div>
-            <div className={`mt-1 text-xl font-semibold ${c.tone}`}>{c.value}</div>
+            <div className={`mt-1 text-lg font-semibold ${c.tone}`}>{c.value}</div>
             <div className="mt-1 text-xs text-slate-500">{c.sub}</div>
           </div>
         ))}
@@ -96,15 +96,15 @@ export default async function DashboardPage() {
         <div className="card card-pad lg:col-span-2">
           <div className="flex items-center justify-between">
             <h2 className="font-semibold">Penjualan terakhir</h2>
-            <Link href="/app/sales" className="text-sm font-medium text-emerald-700 hover:underline">
+            <Link href="/app/sales" className="text-sm font-medium text-brand-700 hover:underline">
               Lihat semua
             </Link>
           </div>
 
           {sales.length === 0 ? (
-            <p className="mt-4 text-sm text-slate-500">
+            <p className="mt-4 text-xs text-slate-500">
               Belum ada transaksi. Mulai dari menu{" "}
-              <Link href="/app/pos" className="font-medium text-emerald-700 hover:underline">
+              <Link href="/app/pos" className="font-medium text-brand-700 hover:underline">
                 Kasir
               </Link>
               .
@@ -126,7 +126,7 @@ export default async function DashboardPage() {
                       <td>
                         <Link
                           href={`/app/sales/${s.id}`}
-                          className="font-mono text-xs font-medium text-emerald-700 hover:underline"
+                          className="font-mono text-xs font-medium text-brand-700 hover:underline"
                         >
                           {s.invoice_no}
                         </Link>
@@ -150,13 +150,13 @@ export default async function DashboardPage() {
               <h2 className="font-semibold">Stok menipis</h2>
               <Link
                 href="/app/stock"
-                className="text-sm font-medium text-emerald-700 hover:underline"
+                className="text-sm font-medium text-brand-700 hover:underline"
               >
                 Kelola
               </Link>
             </div>
             {lowItems.length === 0 ? (
-              <p className="mt-3 text-sm text-slate-500">Semua stok di atas batas minimum.</p>
+              <p className="mt-3 text-xs text-slate-500">Semua stok di atas batas minimum.</p>
             ) : (
               <ul className="mt-3 space-y-2">
                 {lowItems.map((p) => (
@@ -183,7 +183,7 @@ export default async function DashboardPage() {
                 <Link
                   key={a.href}
                   href={a.href}
-                  className="rounded-lg border border-slate-200 px-3 py-2 text-center text-slate-700 hover:border-emerald-300 hover:bg-emerald-50"
+                  className="rounded border border-slate-200 px-3 py-2 text-center text-slate-700 hover:border-brand-300 hover:bg-brand-50"
                 >
                   {a.label}
                 </Link>

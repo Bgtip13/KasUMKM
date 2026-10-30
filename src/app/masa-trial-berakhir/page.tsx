@@ -34,7 +34,7 @@ export default async function TrialEndedPage() {
             beserta nama usaha Anda. Paket akan diaktifkan dari panel pemilik, jadi tidak ada data
             yang perlu dimasukkan ulang.
           </p>
-          <div className="rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-500">
+          <div className="rounded bg-slate-50 px-3 py-2 text-xs text-slate-500">
             Kasir dan staf di usaha ini juga tidak bisa masuk selama paket belum diaktifkan.
           </div>
           <SignOutForm redirectTo="/login" />

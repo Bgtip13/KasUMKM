@@ -252,7 +252,7 @@ export function PurchaseForm({ products }: { products: ProductOption[] }) {
           </span>
         </div>
 
-        {error && <p className="rounded-lg bg-rose-50 px-3 py-2 text-xs text-rose-700">{error}</p>}
+        {error && <p className="rounded bg-rose-50 px-3 py-2 text-xs text-rose-700">{error}</p>}
 
         <button
           type="button"

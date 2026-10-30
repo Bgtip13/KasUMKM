@@ -58,8 +58,8 @@ export default async function FinancePage({
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-xl font-semibold">Kas masuk & keluar</h1>
-        <p className="text-sm text-slate-500">
+        <h1 className="text-lg font-semibold">Kas masuk & keluar</h1>
+        <p className="text-xs text-slate-500">
           Untuk transaksi di luar penjualan dan pembelian, misalnya sewa, listrik, atau modal.
         </p>
       </div>

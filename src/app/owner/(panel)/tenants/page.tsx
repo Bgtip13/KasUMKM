@@ -28,8 +28,8 @@ export default async function OwnerTenantsPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-semibold">Daftar usaha</h1>
-        <p className="text-sm text-slate-500">
+        <h1 className="text-lg font-semibold">Daftar usaha</h1>
+        <p className="text-xs text-slate-500">
           Semua usaha yang aktif dari kode lisensi yang terjual.
         </p>
       </div>
@@ -42,7 +42,7 @@ export default async function OwnerTenantsPage({
       {params.error && <Alert tone="error">{params.error}</Alert>}
 
       {error && (
-        <div className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">
+        <div className="rounded border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">
           Gagal memuat data: {error.message}
         </div>
       )}

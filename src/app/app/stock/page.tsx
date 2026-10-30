@@ -64,8 +64,8 @@ export default async function StockPage({
     <div className="space-y-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold">Stok</h1>
-          <p className="text-sm text-slate-500">
+          <h1 className="text-lg font-semibold">Stok</h1>
+          <p className="text-xs text-slate-500">
             Stok masuk, keluar, dan opname. Semua perubahan tercatat di kartu stok.
           </p>
         </div>

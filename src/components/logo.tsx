@@ -19,7 +19,7 @@ export function Logo({ size = "md" }: { size?: "sm" | "md" }) {
         alt={`Logo ${appName}`}
         width={px}
         height={px}
-        className="shrink-0 rounded-lg"
+        className="shrink-0 rounded"
       />
       <span className={`font-semibold tracking-tight ${size === "sm" ? "text-sm" : "text-lg"}`}>
         {appName}

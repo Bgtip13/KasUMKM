@@ -41,8 +41,8 @@ export default async function PurchasesPage({
     <div className="space-y-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold">Pembelian</h1>
-          <p className="text-sm text-slate-500">
+          <h1 className="text-lg font-semibold">Pembelian</h1>
+          <p className="text-xs text-slate-500">
             Pembelian menambah stok dan memperbarui HPP rata-rata produk.
           </p>
         </div>
@@ -102,7 +102,7 @@ export default async function PurchasesPage({
                   <td>
                     <Link
                       href={`/app/purchases/${p.id}`}
-                      className="font-mono text-xs font-medium text-emerald-700 hover:underline"
+                      className="font-mono text-xs font-medium text-brand-700 hover:underline"
                     >
                       {p.purchase_no}
                     </Link>

@@ -10,7 +10,7 @@ export default function AppLoading() {
           <div className="h-6 w-56 animate-pulse rounded bg-slate-100" />
           <div className="h-4 w-72 animate-pulse rounded bg-slate-100" />
         </div>
-        <div className="h-9 w-36 animate-pulse rounded-lg bg-slate-100" />
+        <div className="h-9 w-36 animate-pulse rounded bg-slate-100" />
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
