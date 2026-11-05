@@ -19,9 +19,9 @@ export function Logo({ size = "md" }: { size?: "sm" | "md" }) {
         alt={`Logo ${appName}`}
         width={px}
         height={px}
-        className="shrink-0 rounded"
+        className="shrink-0 rounded-xl bg-white shadow-sm ring-1 ring-white/60"
       />
-      <span className={`font-semibold tracking-tight ${size === "sm" ? "text-sm" : "text-lg"}`}>
+      <span className={`font-bold tracking-tight ${size === "sm" ? "text-sm" : "text-lg"}`}>
         {appName}
       </span>
     </div>

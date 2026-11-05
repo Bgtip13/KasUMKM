@@ -46,7 +46,7 @@ export function TrialBanner({ endsAt }: { endsAt: string }) {
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-1.5 gap-y-1 px-4 py-2 text-sm text-amber-900">
         <span className="font-medium">Masa trial</span>
         <span>berakhir dalam</span>
-        <span className="rounded bg-amber-100 px-1.5 py-0.5 font-mono font-semibold tabular-nums">
+        <span className="rounded-xl bg-amber-100 px-1.5 py-0.5 font-mono font-semibold tabular-nums">
           {remaining === null ? "--:--:--" : formatRemaining(remaining)}
         </span>
         <span className="text-amber-800/80">· semua data tetap tersimpan setelah trial selesai.</span>

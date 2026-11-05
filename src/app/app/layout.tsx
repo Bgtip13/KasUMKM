@@ -11,11 +11,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="min-h-screen md:flex">
-      <aside className="border-b border-[#dfe3e8] bg-white print:hidden md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:border-b-0 md:border-r">
-        <div className="flex items-center justify-between gap-3 bg-[#c8102e] px-4 py-3 text-white md:block">
+      <aside className="border-b border-[#e2e4f3] bg-white/75 backdrop-blur-xl print:hidden md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:border-b-0 md:border-r">
+        <div className="flex items-center justify-between gap-3 bg-sidebar px-4 py-4 text-white md:block">
           <Logo size="sm" />
-          <div className="flex items-center gap-1.5 text-[11px] font-medium text-white/80 md:mt-2">
-            <Store className="h-3.5 w-3.5 shrink-0 text-white/65" aria-hidden="true" />
+          <div className="flex items-center gap-1.5 text-[11px] font-medium text-blue-100/80 md:mt-2">
+            <Store className="h-3.5 w-3.5 shrink-0 text-cyan-200/80" aria-hidden="true" />
             <span className="max-w-40 truncate md:max-w-full">{tenant.name}</span>
           </div>
         </div>
@@ -24,8 +24,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           <AppNav isAdmin={admin} canViewSales={canViewSales(profile)} />
         </div>
 
-        <div className="hidden border-t border-[#eceef1] px-4 py-3 md:block">
-          <div className="mb-1.5 inline-flex items-center gap-1 rounded-sm bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
+        <div className="hidden border-t border-[#eceefa] px-4 py-3 md:block">
+          <div className="mb-1.5 inline-flex items-center gap-1 rounded-md bg-gradient-to-r from-violet-100 to-cyan-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand-800">
             {admin ? (
               <ShieldCheck className="h-3 w-3" aria-hidden="true" />
             ) : (
@@ -45,7 +45,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           <TrialBanner endsAt={tenant.trial_ends_at} />
         )}
         <main className="mx-auto max-w-6xl px-4 py-5 print:max-w-none print:p-0">{children}</main>
-        <div className="border-t border-[#dfe3e8] px-4 py-3 text-center print:hidden md:hidden">
+        <div className="border-t border-[#e2e4f3] px-4 py-3 text-center print:hidden md:hidden">
           <SignOutForm redirectTo="/login" />
         </div>
       </div>

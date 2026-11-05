@@ -161,7 +161,7 @@ export default async function SaleDetailPage({
       </div>
 
       {admin && (
-        <div className="rounded border border-slate-200 bg-white p-3 text-xs text-slate-500">
+        <div className="rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-500">
           Membatalkan transaksi akan menghapus transaksi ini dan mengembalikan stok produk ke jumlah
           sebelumnya. Riwayat pembatalan tetap tercatat di kartu stok.
         </div>

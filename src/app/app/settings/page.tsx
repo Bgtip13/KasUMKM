@@ -137,7 +137,7 @@ export default async function SettingsPage({
             </div>
           </div>
 
-          <div className="rounded border border-slate-200 bg-slate-50 p-3">
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
             <label className="flex items-center gap-2 text-sm font-medium">
               <input type="checkbox" name="tax_enabled" defaultChecked={pphActive} />
               Kenakan PPN pada transaksi

@@ -42,7 +42,7 @@ export default async function OwnerTenantsPage({
       {params.error && <Alert tone="error">{params.error}</Alert>}
 
       {error && (
-        <div className="rounded border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">
+        <div className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">
           Gagal memuat data: {error.message}
         </div>
       )}

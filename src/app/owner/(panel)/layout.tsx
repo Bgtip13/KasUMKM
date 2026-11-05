@@ -9,11 +9,11 @@ export default async function OwnerLayout({ children }: { children: React.ReactN
 
   return (
     <div className="min-h-screen">
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-white/70 bg-white/70 shadow-[0_10px_30px_-24px_rgba(86,54,242,0.5)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
           <div className="flex items-center gap-3">
             <Logo size="sm" />
-            <span className="badge bg-slate-100 text-slate-600">
+            <span className="badge bg-gradient-to-r from-violet-100 to-cyan-100 text-brand-800">
               <ShieldCheck className="h-3 w-3" aria-hidden="true" />
               Panel pemilik
             </span>

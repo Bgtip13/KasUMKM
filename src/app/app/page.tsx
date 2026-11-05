@@ -183,7 +183,7 @@ export default async function DashboardPage() {
                 <Link
                   key={a.href}
                   href={a.href}
-                  className="rounded border border-slate-200 px-3 py-2 text-center text-slate-700 hover:border-brand-300 hover:bg-brand-50"
+                  className="rounded-xl border border-slate-200 px-3 py-2 text-center text-slate-700 hover:border-brand-300 hover:bg-brand-50"
                 >
                   {a.label}
                 </Link>

@@ -50,8 +50,8 @@ export default async function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
-      <header className="bg-[#c8102e] text-white">
+    <div className="min-h-screen">
+      <header className="bg-sidebar text-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <Logo />
           <div className="flex items-center gap-2">
@@ -87,7 +87,7 @@ export default async function LandingPage() {
               Untuk UMKM Indonesia
             </span>
             <h1 className="mt-4 text-4xl font-bold tracking-tight text-slate-900 md:text-5xl">
-              Pembukuan rapi, tanpa bikin repot.
+              Pembukuan rapi, <span className="text-gradient">tanpa bikin repot.</span>
             </h1>
             <p className="mt-4 text-lg text-slate-600">
               Kasir, stok, pembelian, kas, dan laporan laba rugi dalam satu aplikasi. Cukup satu kode
@@ -112,7 +112,7 @@ export default async function LandingPage() {
           <div className="grid gap-3 sm:grid-cols-2">
             {features.map((f) => (
               <div key={f.title} className="card card-pad">
-                <div className="flex h-9 w-9 items-center justify-center rounded bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-50 text-brand-600 ring-1 ring-brand-100">
                   <f.Icon className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
                 </div>
                 <h3 className="mt-3 text-sm font-semibold text-slate-900">{f.title}</h3>
@@ -123,7 +123,7 @@ export default async function LandingPage() {
         </div>
       </main>
 
-      <footer className="border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-200/70 py-6 text-center text-xs text-slate-500">
         {process.env.NEXT_PUBLIC_APP_NAME || "KasUMKM"} — aplikasi pembukuan UMKM
       </footer>
     </div>

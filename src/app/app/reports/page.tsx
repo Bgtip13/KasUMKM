@@ -266,9 +266,9 @@ export default async function ReportsPage({
                     <td className="text-right">{formatNumber(d.transactions)}</td>
                     <td className="text-right">{formatRupiah(d.total)}</td>
                     <td>
-                      <div className="h-2 w-full rounded bg-slate-100">
+                      <div className="h-2 w-full rounded-xl bg-slate-100">
                         <div
-                          className="h-2 rounded bg-brand-500"
+                          className="h-2 rounded-xl bg-brand-500"
                           style={{ width: `${Math.max((Number(d.total) / maxDaily) * 100, 4)}%` }}
                         />
                       </div>
